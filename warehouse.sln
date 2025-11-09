@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "warehouse-management", "warehouse-management", "{B60567B8-89F1-8C1F-C68D-CE92BE68DA89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{2A6F5027-3D42-3E54-85D2-E04E2A0538EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warehouse.Api", "warehouse-management\backend\Warehouse.Api\Warehouse.Api.csproj", "{746A4DB5-260F-6A1B-23A1-C29E77B3D9CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{746A4DB5-260F-6A1B-23A1-C29E77B3D9CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746A4DB5-260F-6A1B-23A1-C29E77B3D9CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746A4DB5-260F-6A1B-23A1-C29E77B3D9CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746A4DB5-260F-6A1B-23A1-C29E77B3D9CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2A6F5027-3D42-3E54-85D2-E04E2A0538EF} = {B60567B8-89F1-8C1F-C68D-CE92BE68DA89}
+		{746A4DB5-260F-6A1B-23A1-C29E77B3D9CE} = {2A6F5027-3D42-3E54-85D2-E04E2A0538EF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {550DDB98-4AEC-4847-9AEF-CB7B1567B679}
+	EndGlobalSection
+EndGlobal
