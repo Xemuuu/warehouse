@@ -7,6 +7,7 @@ using Warehouse.Application.Common.Models;
 using Warehouse.Domain.Aggregates;
 using Warehouse.Domain.Enums;
 using Warehouse.Domain.ValueObjects;
+using Warehouse.Domain.Exceptions;
 
 namespace Warehouse.Application.Auth.Commands.Register;
 
@@ -28,7 +29,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
     public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        // 1. Walidacja emaila (Value Object)
+        // 1. Email - ValidationBehavior już sprawdził format ✅
         var email = Email.Create(request.Email);
 
         // 2. Sprawdź czy użytkownik już istnieje
@@ -36,7 +37,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
 
         if (existingUser != null)
-            throw new InvalidOperationException("User with this email already exists");
+            throw new ValidationException("Email", "Użytkownik z tym adresem email już istnieje");
 
         // 3. Wywołanie stored procedure - walidacja pracownika
         var employeeInfo = await _dbContext.Database
@@ -47,9 +48,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             .FirstOrDefaultAsync(cancellationToken);
 
         if (employeeInfo == null)
-            throw new InvalidOperationException("Email not found in employee database. Only employees can register.");
+            throw new ValidationException("Email", "Ten email nie został znaleziony w bazie pracowników. Tylko pracownicy mogą się zarejestrować.");
 
-        // 4. Walidacja hasła (Value Object)
+        // 4. Password - ValidationBehavior już sprawdził ✅
         var password = Password.Create(request.Password);
 
         // 5. Hashowanie hasła

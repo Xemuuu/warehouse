@@ -1,5 +1,6 @@
 using Warehouse.Application;
 using Warehouse.Infrastructure;
+using Warehouse.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// HttpContextAccessor dla dostępu do User claims
+builder.Services.AddHttpContextAccessor();
 
 // CORS
 builder.Services.AddCors(options =>
@@ -24,6 +28,9 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+// Global Exception Handler - MUSI BYĆ NA POCZĄTKU
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

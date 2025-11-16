@@ -28,6 +28,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --toastify-color-success: #0AC694;
+  --toastify-color-error: #F4D35E;
+  --toastify-color-info: #0AC694;
+  --toastify-text-color-light: #DAE2E4;
+  --toastify-color-dark: #2F2F2F;
 }
 
 a {
@@ -82,4 +88,26 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Toast customization */
+:root {
+  --toastify-color-success: #0AC694;
+  --toastify-color-error: #F4D35E;
+  --toastify-text-color-light: #DAE2E4;
+  --toastify-color-dark: #2F2F2F;
+}
+
+.Toastify__toast {
+  background-color: #2F2F2F !important;
+  color: #DAE2E4 !important;
+  border: 1px solid #0AC694;
+}
+
+.Toastify__toast--error {
+  border-color: #F4D35E !important;
+}
+
+.Toastify__toast--success {
+  border-color: #0AC694 !important;
 }

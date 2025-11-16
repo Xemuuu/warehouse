@@ -5,6 +5,7 @@ using Warehouse.Application.Abstractions.Services;
 using Warehouse.Application.Auth.Common;
 using Warehouse.Application.Common.Models;
 using Warehouse.Domain.ValueObjects;
+using Warehouse.Domain.Exceptions;
 
 namespace Warehouse.Application.Auth.Queries.Login;
 
@@ -34,13 +35,13 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
             .FirstOrDefaultAsync(u => u.Email == email && u.IsActive, cancellationToken);
 
         if (user == null)
-            throw new InvalidOperationException("Invalid email or password");
+            throw new ValidationException("Email", "Niepoprawny email lub hasło");
 
         // 3. Weryfikacja hasła
         var isValidPassword = _passwordHasher.Verify(request.Password, user.PasswordHash);
 
         if (!isValidPassword)
-            throw new InvalidOperationException("Invalid email or password");
+            throw new ValidationException("Password", "Niepoprawny email lub hasło");
 
         // 4. Pobierz dane pracownika (imię, nazwisko)
         var employeeInfo = await _dbContext.Database

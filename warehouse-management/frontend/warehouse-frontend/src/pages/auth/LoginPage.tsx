@@ -4,6 +4,7 @@ import { authApi } from '@/features/auth/api/authApi';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import type { LoginRequest } from '@/features/auth/types/auth.types';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function LoginPage() {
         response.token
       );
 
-      // Redirect do dashboard
+      toast.success(`Witaj, ${response.firstName}! 🎉`);
       navigate('/');
     } catch (error) {
       console.error('Login failed:', error);

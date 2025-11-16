@@ -4,6 +4,7 @@ import { authApi } from '@/features/auth/api/authApi';
 import { RegisterForm } from '@/features/auth/components/RegisterForm';
 import type { RegisterRequest } from '@/features/auth/types/auth.types';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function RegisterPage() {
         response.token
       );
 
-      // Redirect do dashboard
+      toast.success(`Konto utworzone! Witaj, ${response.firstName}! 🎉`);
       navigate('/');
     } catch (error) {
       console.error('Registration failed:', error);

@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { LoginRequest } from '../types/auth.types';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const loginSchema = z.object({
   email: z.string().email('Niepoprawny format email'),
@@ -15,7 +16,7 @@ interface LoginFormProps {
 
 export function LoginForm({ onSubmit }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -27,11 +28,10 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
   const handleFormSubmit = async (data: LoginRequest) => {
     setIsLoading(true);
-    setError(null);
     try {
       await onSubmit(data);
     } catch (err) {
-      setError('Niepoprawny email lub hasło');
+      toast.error('Niepoprawny email lub hasło');
     } finally {
       setIsLoading(false);
     }
@@ -54,9 +54,6 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
                      transition-all"
           placeholder="twoj.email@adventure-works.com"
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-accent">{errors.email.message}</p>
-        )}
       </div>
 
       {/* Password */}
@@ -64,27 +61,28 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
           Hasło
         </label>
-        <input
-          {...register('password')}
-          type="password"
-          id="password"
-          className="w-full px-4 py-3 bg-background border border-secondary rounded-lg 
-                     text-foreground placeholder-foreground/50
-                     focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
-                     transition-all"
-          placeholder="••••••••"
-        />
-        {errors.password && (
-          <p className="mt-1 text-sm text-accent">{errors.password.message}</p>
-        )}
-      </div>
-
-      {/* Error Message */}
-      {error && (
-        <div className="p-3 bg-accent/10 border border-accent rounded-lg">
-          <p className="text-sm text-accent">{error}</p>
+        <div className="relative">
+          <input
+            {...register('password')}
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            className="w-full px-4 py-3 pr-12 bg-background border border-secondary rounded-lg 
+                       text-foreground placeholder-foreground/50
+                       focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+                       transition-all"
+            placeholder="••••••••"
+            disabled={isLoading}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-foreground transition-colors"
+            disabled={isLoading}
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Submit Button */}
       <button
@@ -93,8 +91,11 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         className="w-full py-3 px-4 bg-primary text-background font-semibold rounded-lg
                    hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
                    disabled:opacity-50 disabled:cursor-not-allowed
-                   transition-all"
+                   transition-all flex items-center justify-center gap-2"
       >
+        {isLoading && (
+          <div className="w-5 h-5 border-2 border-background border-t-transparent rounded-full animate-spin"></div>
+        )}
         {isLoading ? 'Logowanie...' : 'Zaloguj się'}
       </button>
     </form>
