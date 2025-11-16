@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+  body, #root {
     @apply bg-background text-foreground;
     margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
+    padding: 0;
+    width: 100%;
     min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
   }
 
   * {

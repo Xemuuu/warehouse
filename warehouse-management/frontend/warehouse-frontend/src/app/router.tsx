@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ROUTES } from '@/shared/lib/constants/routes';
 import DashboardPage from '@/pages/DashboardPage';
+import ProductsPage from '@/pages/ProductsPage';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
 import { ProtectedRoute } from '@/shared/components/ProtectedRoute';
@@ -13,6 +14,16 @@ export const router = createBrowserRouter([
       <ProtectedRoute>
         <Layout>
           <DashboardPage />
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/products',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <ProductsPage />
         </Layout>
       </ProtectedRoute>
     ),
