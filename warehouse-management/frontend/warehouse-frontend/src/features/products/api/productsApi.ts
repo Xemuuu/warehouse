@@ -10,6 +10,7 @@ export const productsApi = {
         color: filters?.color,
         minPrice: filters?.minPrice,
         maxPrice: filters?.maxPrice,
+        locationId: filters?.locationId, // ✅ DODANE
         page: filters?.page || 1,
         pageSize: filters?.pageSize || 20,
         orderBy: filters?.orderBy || 'name',

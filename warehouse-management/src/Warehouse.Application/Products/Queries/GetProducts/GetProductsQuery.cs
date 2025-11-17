@@ -10,6 +10,7 @@ public record GetProductsQuery(
     string? Color = null,
     decimal? MinPrice = null,
     decimal? MaxPrice = null,
+    short? LocationId = null,  // ✅ DODANE
     int Page = 1,
     int PageSize = 20,
     string OrderBy = "name"

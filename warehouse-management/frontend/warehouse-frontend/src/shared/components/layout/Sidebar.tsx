@@ -1,10 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
+import { ROUTES } from '@/shared/lib/constants/routes'; // Dodane
 
 const menuItems = [
-  { path: '/', label: 'Dashboard', icon: '📊' },
-  { path: '/products', label: 'Produkty', icon: '📦' },
-  { path: '/inventory', label: 'Magazyn', icon: '📍' },
-  { path: '/orders', label: 'Zamówienia', icon: '🛒' },
+  { path: ROUTES.HOME, label: 'Dashboard', icon: '📊' },
+  { path: ROUTES.PRODUCTS, label: 'Produkty', icon: '📦' },
+  { path: ROUTES.INVENTORY, label: 'Magazyn', icon: '📍' },
+  { path: ROUTES.PURCHASE_ORDERS, label: 'Zamówienia', icon: '🛒' }, // Zmienione
 ];
 
 export function Sidebar() {

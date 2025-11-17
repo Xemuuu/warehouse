@@ -13,7 +13,7 @@ export function Navbar() {
   if (!user) return null;
 
   return (
-    <nav className="bg-secondary border-b border-secondary/50">
+    <nav className="bg-secondary border-b border-primary/30">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo / Title */}

@@ -8,6 +8,7 @@ export interface Product {
   categoryName: string | null;
   subcategoryName: string | null;
   totalStock: number;
+  locationNames: string | null;
   totalCount: number;
 }
 
@@ -51,6 +52,7 @@ export interface ProductsFilters {
   color?: string;
   minPrice?: number;
   maxPrice?: number;
+  locationId?: number;
   page?: number;
   pageSize?: number;
   orderBy?: string;

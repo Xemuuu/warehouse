@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import { ROUTES } from '@/shared/lib/constants/routes';
 import DashboardPage from '@/pages/DashboardPage';
 import ProductsPage from '@/pages/ProductsPage';
+import InventoryPage from '@/pages/InventoryPage';
+import PurchaseOrdersPage from '@/pages/PurchaseOrdersPage';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
 import { ProtectedRoute } from '@/shared/components/ProtectedRoute';
@@ -24,6 +26,26 @@ export const router = createBrowserRouter([
       <ProtectedRoute>
         <Layout>
           <ProductsPage />
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/inventory',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <InventoryPage />
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/purchase-orders',
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <PurchaseOrdersPage />
         </Layout>
       </ProtectedRoute>
     ),

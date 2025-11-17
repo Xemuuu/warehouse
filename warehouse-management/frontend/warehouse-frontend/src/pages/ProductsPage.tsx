@@ -15,6 +15,7 @@ export default function ProductsPage() {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [orderBy, setOrderBy] = useState('name');
+  const [locationId, setLocationId] = useState('');  // ✅ DODANE
   
   const pageSize = 20;
 
@@ -26,10 +27,13 @@ export default function ProductsPage() {
         color: color || undefined,
         minPrice: minPrice ? parseFloat(minPrice) : undefined,
         maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
+        locationId: locationId ? parseInt(locationId) : undefined,
         page,
         pageSize,
         orderBy,
       });
+      console.log('API Response:', data);  // ✅ DEBUG
+      console.log('First product:', data.items[0]);  // ✅ DEBUG
       setProducts(data);
     } catch (error) {
       toast.error('Błąd pobierania produktów');
@@ -41,7 +45,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     fetchProducts();
-  }, [page]);
+  }, [page, search, color, minPrice, maxPrice, locationId, orderBy]);  // ✅ ZMIANA - auto-fetch przy zmianie filtrów
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,6 +63,7 @@ export default function ProductsPage() {
     setMinPrice('');
     setMaxPrice('');
     setOrderBy('name');
+    setLocationId('');  // ✅ DODANE
     setPage(1);
     setTimeout(() => fetchProducts(), 0);
   };
@@ -104,7 +109,7 @@ export default function ProductsPage() {
       {/* Advanced Filters (Collapsible) */}
       {showFilters && (
         <div className="mb-6 p-6 bg-secondary rounded-lg border border-secondary/50">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             {/* Color Filter */}
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
@@ -156,6 +161,35 @@ export default function ProductsPage() {
                            text-foreground placeholder-foreground/50
                            focus:outline-none focus:ring-2 focus:ring-primary"
               />
+            </div>
+
+            {/* ✅ NOWE: Location Filter */}
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                📍 Lokalizacja
+              </label>
+              <select
+                value={locationId}
+                onChange={(e) => setLocationId(e.target.value)}
+                className="w-full px-4 py-3 bg-background border border-secondary rounded-lg
+                           text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">Wszystkie</option>
+                <option value="1">Tool Crib</option>
+                <option value="2">Sheet Metal Racks</option>
+                <option value="3">Paint Shop</option>
+                <option value="4">Paint Storage</option>
+                <option value="5">Metal Storage</option>
+                <option value="6">Miscellaneous Storage</option>
+                <option value="7">Finished Goods Storage</option>
+                <option value="10">Frame Forming</option>
+                <option value="20">Frame Welding</option>
+                <option value="30">Debur and Polish</option>
+                <option value="40">Paint</option>
+                <option value="45">Specialized Paint</option>
+                <option value="50">Subassembly</option>
+                <option value="60">Final Assembly</option>
+              </select>
             </div>
           </div>
 
@@ -218,6 +252,7 @@ export default function ProductsPage() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Cena</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Stan</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Kategoria</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Lokalizacja</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-secondary/50">
@@ -227,11 +262,12 @@ export default function ProductsPage() {
                     <td className="px-6 py-4 text-sm text-foreground font-medium">{product.productName}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{product.productNumber}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{product.color || '-'}</td>
-                    <td className="px-6 py-4 text-sm text-primary font-semibold">
-                      ${product.listPrice.toFixed(2)}
-                    </td>
+                    <td className="px-6 py-4 text-sm text-primary font-semibold">${product.listPrice.toFixed(2)}</td>
                     <td className="px-6 py-4 text-sm text-foreground">{product.totalStock}</td>
                     <td className="px-6 py-4 text-sm text-foreground/70">{product.categoryName || '-'}</td>
+                    <td className="px-6 py-4 text-sm text-foreground/70">
+                      {(product as any).locationnames || (product as any).locationNames || '-'}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -274,4 +310,25 @@ export default function ProductsPage() {
       )}
     </div>
   );
+}
+
+// ✅ Helper function - mapowanie ID na nazwę lokalizacji
+function getLocationName(id: number): string {
+  const locations: Record<number, string> = {
+    1: 'Tool Crib',
+    2: 'Sheet Metal Racks',
+    3: 'Paint Shop',
+    4: 'Paint Storage',
+    5: 'Metal Storage',
+    6: 'Miscellaneous Storage',
+    7: 'Finished Goods Storage',
+    10: 'Frame Forming',
+    20: 'Frame Welding',
+    30: 'Debur and Polish',
+    40: 'Paint',
+    45: 'Specialized Paint',
+    50: 'Subassembly',
+    60: 'Final Assembly',
+  };
+  return locations[id] || 'Nieznana';
 }

@@ -3,4 +3,5 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   PRODUCTS: '/products',
   INVENTORY: '/inventory',
+  PURCHASE_ORDERS: '/purchase-orders',
 } as const;

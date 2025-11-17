@@ -31,6 +31,7 @@ public class ProductsController : ControllerBase
         [FromQuery] string? color = null,
         [FromQuery] decimal? minPrice = null,
         [FromQuery] decimal? maxPrice = null,
+        [FromQuery] short? locationId = null,  // ✅ DODANE
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20,
         [FromQuery] string orderBy = "name")
@@ -41,6 +42,7 @@ public class ProductsController : ControllerBase
             color,
             minPrice,
             maxPrice,
+            locationId,  // ✅ DODANE
             page,
             pageSize,
             orderBy
