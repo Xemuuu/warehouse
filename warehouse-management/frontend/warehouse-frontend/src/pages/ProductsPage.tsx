@@ -311,24 +311,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
-// ✅ Helper function - mapowanie ID na nazwę lokalizacji
-function getLocationName(id: number): string {
-  const locations: Record<number, string> = {
-    1: 'Tool Crib',
-    2: 'Sheet Metal Racks',
-    3: 'Paint Shop',
-    4: 'Paint Storage',
-    5: 'Metal Storage',
-    6: 'Miscellaneous Storage',
-    7: 'Finished Goods Storage',
-    10: 'Frame Forming',
-    20: 'Frame Welding',
-    30: 'Debur and Polish',
-    40: 'Paint',
-    45: 'Specialized Paint',
-    50: 'Subassembly',
-    60: 'Final Assembly',
-  };
-  return locations[id] || 'Nieznana';
-}

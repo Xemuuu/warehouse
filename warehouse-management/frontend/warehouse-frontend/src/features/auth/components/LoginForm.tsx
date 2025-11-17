@@ -18,11 +18,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginRequest>({
+  const { register, handleSubmit } = useForm<LoginRequest>({
     resolver: zodResolver(loginSchema),
   });
 
