@@ -11,12 +11,20 @@ const STATUS = {
   COMPLETE: 4,
 };
 
+const PAGE_SIZE = 10;
+
 export default function PurchaseOrdersPage() {
   const [pending, setPending] = useState<PurchaseOrder[]>([]);
   const [approved, setApproved] = useState<PurchaseOrder[]>([]);
   const [rejected, setRejected] = useState<PurchaseOrder[]>([]);
   const [complete, setComplete] = useState<PurchaseOrder[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Paginacja dla każdej sekcji
+  const [pendingPage, setPendingPage] = useState(1);
+  const [approvedPage, setApprovedPage] = useState(1);
+  const [rejectedPage, setRejectedPage] = useState(1);
+  const [completePage, setCompletePage] = useState(1);
 
   const user = useAuthStore((s) => s.user);
   const canManage = user?.role === 'Admin' || user?.role === 'Manager';
@@ -25,10 +33,10 @@ export default function PurchaseOrdersPage() {
     setLoading(true);
     try {
       const [p, a, r, c] = await Promise.all([
-        purchaseOrdersApi.getPurchaseOrders(STATUS.PENDING),
-        purchaseOrdersApi.getPurchaseOrders(STATUS.APPROVED),
-        purchaseOrdersApi.getPurchaseOrders(STATUS.REJECTED),
-        purchaseOrdersApi.getPurchaseOrders(STATUS.COMPLETE),
+        purchaseOrdersApi.getPurchaseOrders(STATUS.PENDING, pendingPage, PAGE_SIZE),
+        purchaseOrdersApi.getPurchaseOrders(STATUS.APPROVED, approvedPage, PAGE_SIZE),
+        purchaseOrdersApi.getPurchaseOrders(STATUS.REJECTED, rejectedPage, PAGE_SIZE),
+        purchaseOrdersApi.getPurchaseOrders(STATUS.COMPLETE, completePage, PAGE_SIZE),
       ]);
       setPending(p);
       setApproved(a);
@@ -44,7 +52,7 @@ export default function PurchaseOrdersPage() {
 
   useEffect(() => {
     fetchAll();
-  }, []);
+  }, [pendingPage, approvedPage, rejectedPage, completePage]);
 
   const handleApprove = async (id: number) => {
     try {
@@ -96,6 +104,34 @@ export default function PurchaseOrdersPage() {
     </div>
   );
 
+  const renderPagination = (currentPage: number, setPage: (page: number) => void, totalCount: number) => {
+    const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+    const hasPrev = currentPage > 1;
+    const hasNext = currentPage < totalPages;
+
+    return (
+      <div className="flex items-center justify-between mt-4">
+        <button
+          onClick={() => setPage(currentPage - 1)}
+          disabled={!hasPrev}
+          className="px-4 py-2 bg-secondary text-foreground rounded disabled:opacity-50"
+        >
+          ← Poprzednia
+        </button>
+        <span className="text-sm text-foreground/70">
+          Strona {currentPage} z {totalPages}
+        </span>
+        <button
+          onClick={() => setPage(currentPage + 1)}
+          disabled={!hasNext}
+          className="px-4 py-2 bg-secondary text-foreground rounded disabled:opacity-50"
+        >
+          Następna →
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="p-8">
       <div className="mb-6 flex items-center justify-between">
@@ -116,6 +152,7 @@ export default function PurchaseOrdersPage() {
             pending.map((po) => renderRow(po, true))
           }
         </div>
+        {renderPagination(pendingPage, setPendingPage, pending[0]?.totalCount || 0)}
       </section>
 
       <section className="mb-8">
@@ -123,6 +160,7 @@ export default function PurchaseOrdersPage() {
         <div className="bg-secondary rounded-lg p-4">
           {approved.length === 0 ? <div className="py-6 text-foreground/60">Brak</div> : approved.map(po => renderRow(po))}
         </div>
+        {renderPagination(approvedPage, setApprovedPage, approved[0]?.totalCount || 0)}
       </section>
 
       <section className="mb-8">
@@ -130,6 +168,7 @@ export default function PurchaseOrdersPage() {
         <div className="bg-secondary rounded-lg p-4">
           {rejected.length === 0 ? <div className="py-6 text-foreground/60">Brak</div> : rejected.map(po => renderRow(po))}
         </div>
+        {renderPagination(rejectedPage, setRejectedPage, rejected[0]?.totalCount || 0)}
       </section>
 
       <section>
@@ -137,6 +176,7 @@ export default function PurchaseOrdersPage() {
         <div className="bg-secondary rounded-lg p-4">
           {complete.length === 0 ? <div className="py-6 text-foreground/60">Brak</div> : complete.map(po => renderRow(po))}
         </div>
+        {renderPagination(completePage, setCompletePage, complete[0]?.totalCount || 0)}
       </section>
     </div>
   );

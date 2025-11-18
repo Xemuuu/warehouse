@@ -4,4 +4,4 @@ using System.Collections.Generic;
 
 namespace Warehouse.Application.PurchaseOrders.Queries.GetPurchaseOrders;
 
-public record GetPurchaseOrdersQuery(short? Status = null) : IRequest<IReadOnlyList<PurchaseOrderDto>>;
+public record GetPurchaseOrdersQuery(short? Status = null, int Page = 1, int PageSize = 10) : IRequest<IReadOnlyList<PurchaseOrderDto>>;

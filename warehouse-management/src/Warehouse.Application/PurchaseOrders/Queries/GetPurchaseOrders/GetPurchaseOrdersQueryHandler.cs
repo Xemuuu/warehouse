@@ -18,8 +18,9 @@ public class GetPurchaseOrdersQueryHandler : IRequestHandler<GetPurchaseOrdersQu
     {
         var results = await _dbContext.Database
             .SqlQueryRaw<PurchaseOrderDto>(
-                @"SELECT * FROM purchasing.get_purchase_orders({0}::SMALLINT, NULL)",
-                (object?)request.Status ?? DBNull.Value
+                @"SELECT * FROM purchasing.get_purchase_orders({0}::SMALLINT, {1})",  // Rzutowanie na SMALLINT
+                (object?)request.Status ?? DBNull.Value,
+                request.PageSize
             )
             .ToListAsync(cancellationToken);
 

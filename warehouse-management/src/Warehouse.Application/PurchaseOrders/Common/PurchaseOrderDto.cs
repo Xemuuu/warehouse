@@ -33,4 +33,7 @@ public record PurchaseOrderDto
 
     [Column("subtotal")]
     public decimal Subtotal { get; init; }
+
+    [Column("totalcount")]
+    public long TotalCount { get; init; }
 }

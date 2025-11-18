@@ -1,7 +1,7 @@
 export interface PurchaseOrder {
   purchaseOrderId: number;
   orderNumber: string;
-  orderDate: string; // ISO
+  orderDate: string;
   shipDate?: string | null;
   status: number;
   statusName: string;
@@ -9,6 +9,7 @@ export interface PurchaseOrder {
   vendorName: string;
   totalProducts: number;
   subtotal: number;
+  totalCount: number; // Dodane dla paginacji
 }
 
 export interface OperationResult {

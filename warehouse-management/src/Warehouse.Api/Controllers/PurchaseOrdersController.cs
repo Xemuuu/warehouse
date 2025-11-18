@@ -24,9 +24,9 @@ public class PurchaseOrdersController : ControllerBase
     /// Pobiera listę zamówień. Opcjonalny parametr status (1..4).
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] short? status = null)
+    public async Task<IActionResult> Get([FromQuery] short? status = null, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        var query = new GetPurchaseOrdersQuery(status);
+        var query = new GetPurchaseOrdersQuery(status, page, pageSize);
         var result = await _sender.Send(query);
         return Ok(result);
     }
